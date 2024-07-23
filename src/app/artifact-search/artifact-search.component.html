@@ -1,0 +1,52 @@
+<div class="container">
+  <h1>Maven API Explorer</h1>
+  <h3>Please fill the form below, in order to retrieve a complete list of the requested artifact's version</h3>
+  <div class="container">
+    <div class="form-group">
+      <label for="groupId">Group ID:</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="groupId" 
+        [(ngModel)]="groupId"
+        (ngModelChange)="unsetErrorMsg()"
+        [ngModelOptions]="{standalone: true}"
+        autocomplete="off"
+      >
+    </div>
+    <div class="form-group">
+      <label for="artifactId">Artifact ID:</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="artifactId" 
+        [(ngModel)]="artifactId" 
+        (ngModelChange)="unsetErrorMsg()" 
+        [ngModelOptions]="{standalone: true}"
+        autocomplete="off"
+      >
+    </div>
+    
+    <button type="submit" class="btn btn-primary" (click)="search()">Search</button>
+    <button type="button" class="btn btn-secondary" (click)="reset()">Reset Form Fields</button>
+  </div>
+  
+  <div class="alert alert-danger" role="alert" *ngIf="invalidInput">
+    You must insert both groupId and artifactId!
+  </div>
+
+  <div class="alert alert-warning" role="alert" *ngIf="httpResponseError">
+    Error retrieving requested data: {{httpResponseErrorMsg}}
+  </div>
+  
+  <div class="results" *ngIf="artifactsList.length">
+    <h2>Retrieved versions</h2>
+    
+      <div class="card" *ngFor="let artifact of artifactsList">
+        <div class="card-body">
+          <h5 class="card-title">Version: {{artifact.version}}</h5>  
+          <p class="card-text">Release date: {{artifact.timestamp | date:'short'}}</p>
+        </div>
+      </div>
+  </div>
+</div>
